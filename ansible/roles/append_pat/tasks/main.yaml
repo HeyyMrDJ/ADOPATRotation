@@ -1,7 +1,11 @@
 ---
-  - name: Read existing JSON data from file
+  - name: Read existing JSON data from file using cat
+    shell: cat ./pat.json
+    register: cat_output
+
+  - name: Parse JSON content
     set_fact:
-      existing_data: "{{ lookup('file', './pat.json') | from_json }}"
+      existing_data: "{{ cat_output.stdout | from_json }}"
 
   - name: Create new entry
     set_fact:

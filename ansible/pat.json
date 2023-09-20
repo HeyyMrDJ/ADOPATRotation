@@ -1,0 +1,6 @@
+{
+    "TEST": {
+        "Name": "TEST_NAME",
+        "scope": "vso.code"
+    }
+}

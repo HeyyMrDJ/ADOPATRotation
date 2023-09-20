@@ -1,0 +1,22 @@
+---
+- name: Playbook Using My Role
+  hosts: localhost
+  vars:
+    token_name: "{{ azure_token_name }}"
+    scope: "{{ scope }}"
+  tasks:
+    - name: Append new PAT
+      include_role:
+        name: append_pat
+
+    - name: Create New Pat
+      include_role:
+        name: create_pat
+      vars:
+        operation: "create"
+        azure_organization_name: "{{ azure_organization_name }}"
+        azure_tenant_id: "{{ azure_tenant_id }}"
+        azure_client_id: "{{ azure_client_id }}"
+        azure_client_secret: "{{ azure_client_secret }}"
+        azure_username: "{{ azure_username }}"
+        azure_password: "{{ azure_password }}"

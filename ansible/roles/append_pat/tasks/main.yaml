@@ -1,0 +1,23 @@
+---
+  - name: Read existing JSON data from file
+    set_fact:
+      existing_data: "{{ lookup('file', './pat.json') | from_json }}"
+
+  - name: Create new entry
+    set_fact:
+      new_entry: "{{ { token_name: { 'Name': token_name, 'scope': scope } } }}"
+
+  - name: Combine existing data with new entry
+    set_fact:
+      updated_data: "{{ existing_data | combine(new_entry, recursive=True) }}"
+    when: existing_data is defined
+
+  - name: Format JSON nicely
+    set_fact:
+      formatted_json: "{{ updated_data | to_nice_json }}"
+    when: updated_data is defined
+
+  - name: Write updated data to JSON file
+    copy:
+      content: "{{ formatted_json }}"
+      dest: ./pat.json

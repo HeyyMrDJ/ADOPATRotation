@@ -1,0 +1,26 @@
+---
+- name: Playbook Using My Role
+  hosts: localhost
+  vars:
+    token_name: "{{ azure_token_name }}"
+    scope: "{{ scope }}"
+  tasks:
+    - name: Read JSON data from file
+      set_fact:
+        json_data: "{{ lookup('file', 'pat.json') | from_json }}"
+
+    - name: Run role for each entry
+      include_role:
+        name: create_pat
+      vars:
+        operation: "create"
+        azure_organization_name: "{{ azure_organization_name }}"
+        azure_tenant_id: "{{ azure_tenant_id }}"
+        azure_client_id: "{{ azure_client_id }}"
+        azure_client_secret: "{{ azure_client_secret }}"
+        azure_username: "{{ azure_username }}"
+        azure_password: "{{ azure_password }}"
+        token_name: "{{ item.name }}"
+        scope: "{{ item.value.scope }}"
+      loop: "{{ json_data | dict2items }}"
+      when: item.key != "TEST"

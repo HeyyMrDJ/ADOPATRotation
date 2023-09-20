@@ -1,0 +1,9 @@
+{
+    {% for entry_name, entry_data in new_entries.items() %}
+    "{{ entry_name }}": {
+        "Name": "{{ entry_data.Name }}",
+        "scope": "{{ entry_data.scope }}"
+        "validTo": "{{ calculated_date }}"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+}
